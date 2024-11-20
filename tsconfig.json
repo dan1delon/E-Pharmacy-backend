@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "mongodb/*": ["node_modules/mongodb/*"]
+    }
+  }
+}
