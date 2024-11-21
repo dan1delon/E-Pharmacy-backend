@@ -39,7 +39,7 @@ router.post('/logout', ctrlWrapper(logoutUserController));
 
 router.post('/refresh', ctrlWrapper(refreshUserSessionController));
 
-router.get('/user-info', authenticate, ctrlWrapper(getUserInfoController));
+router.get('/user-info', ctrlWrapper(getUserInfoController));
 
 router.post(
   '/send-reset-email',
