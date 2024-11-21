@@ -20,7 +20,7 @@ export const getAllProducts = async ({
   }
 
   if (filter.name) {
-    productsQuery.where('name').regex(new RegExp(filter.keyword, 'i'));
+    productsQuery.where('name').regex(new RegExp(filter.name, 'i'));
   }
 
   const [productsCount, products] = await Promise.all([
