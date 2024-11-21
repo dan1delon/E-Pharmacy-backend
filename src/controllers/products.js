@@ -5,17 +5,13 @@ import { parseFilterParams } from '../utils/parseFilterParams.js';
 
 export const getAllProductsController = async (req, res, next) => {
   try {
-    const { keyword, category, page, perPage } = parsePaginationParams(
-      req.query,
-    );
+    const { page, perPage } = parsePaginationParams(req.query);
     const { sortBy, sortOrder } = parseSortParams(req.query);
     const filter = parseFilterParams(req.query);
 
     const products = await getAllProducts({
       page,
       perPage,
-      keyword,
-      category,
       sortBy,
       sortOrder,
       filter,
