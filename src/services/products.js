@@ -47,3 +47,8 @@ export const getProductById = async (productId) => {
 
   return product;
 };
+
+export const getAllCategories = async () => {
+  const categories = await ProductsCollection.distinct('category');
+  return categories;
+};
