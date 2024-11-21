@@ -28,15 +28,15 @@ export const loginUserController = async (req, res) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),
-    sameSite: 'None', // Для міждоменних запитів
-    secure: process.env.NODE_ENV === 'production', // Встановлюється на true, якщо ви використовуєте HTTPS
+    sameSite: 'None',
+    secure: process.env.NODE_ENV === 'production',
   });
 
   res.cookie('sessionId', session._id, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),
-    sameSite: 'None', // Для міждоменних запитів
-    secure: process.env.NODE_ENV === 'production', // Встановлюється на true, якщо ви використовуєте HTTPS
+    sameSite: 'None',
+    secure: process.env.NODE_ENV === 'production',
   });
 
   res.json({
@@ -54,13 +54,13 @@ export const logoutUserController = async (req, res) => {
   }
 
   res.clearCookie('sessionId', {
-    sameSite: 'None', // Для міждоменних запитів
-    secure: process.env.NODE_ENV === 'production', // Якщо ви використовуєте HTTPS
+    sameSite: 'None',
+    secure: process.env.NODE_ENV === 'production',
   });
 
   res.clearCookie('refreshToken', {
-    sameSite: 'None', // Для міждоменних запитів
-    secure: process.env.NODE_ENV === 'production', // Якщо ви використовуєте HTTPS
+    sameSite: 'None',
+    secure: process.env.NODE_ENV === 'production',
   });
 
   res.status(204).send();
@@ -70,15 +70,15 @@ const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),
-    sameSite: 'None', // Для міждоменних запитів
-    secure: process.env.NODE_ENV === 'production', // Встановлюється на true, якщо ви використовуєте HTTPS
+    sameSite: 'None',
+    secure: process.env.NODE_ENV === 'production',
   });
 
   res.cookie('sessionId', session._id, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),
-    sameSite: 'None', // Для міждоменних запитів
-    secure: process.env.NODE_ENV === 'production', // Встановлюється на true, якщо ви використовуєте HTTPS
+    sameSite: 'None',
+    secure: process.env.NODE_ENV === 'production',
   });
 };
 
