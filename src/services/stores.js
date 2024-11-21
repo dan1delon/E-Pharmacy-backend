@@ -6,7 +6,7 @@ import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 export const getAllStores = async ({
   userId,
   page = 1,
-  perPage = 10,
+  perPage = 9,
   sortOrder = SORT_ORDER.ASC,
   sortBy = '_id',
 }) => {
@@ -37,6 +37,6 @@ export const getNearestStores = async () => {
     const stores = await NearestStoreSchemaCollection.find();
     return stores;
   } catch (error) {
-    throw new Error('Error fetching nearest stores');
+    throw new Error('Error fetching nearest stores, error: ', error);
   }
 };
