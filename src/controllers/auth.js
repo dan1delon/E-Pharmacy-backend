@@ -28,15 +28,20 @@ export const loginUserController = async (req, res) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),
+    sameSite: 'None', // Для міждоменних запитів
+    secure: process.env.NODE_ENV === 'production', // Встановлюється на true, якщо ви використовуєте HTTPS
   });
+
   res.cookie('sessionId', session._id, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),
+    sameSite: 'None', // Для міждоменних запитів
+    secure: process.env.NODE_ENV === 'production', // Встановлюється на true, якщо ви використовуєте HTTPS
   });
 
   res.json({
     status: 200,
-    message: 'Successfully logged in an user!',
+    message: 'Successfully logged in a user!',
     data: {
       accessToken: session.accessToken,
     },
@@ -48,8 +53,15 @@ export const logoutUserController = async (req, res) => {
     await logoutUser(req.cookies.sessionId);
   }
 
-  res.clearCookie('sessionId');
-  res.clearCookie('refreshToken');
+  res.clearCookie('sessionId', {
+    sameSite: 'None', // Для міждоменних запитів
+    secure: process.env.NODE_ENV === 'production', // Якщо ви використовуєте HTTPS
+  });
+
+  res.clearCookie('refreshToken', {
+    sameSite: 'None', // Для міждоменних запитів
+    secure: process.env.NODE_ENV === 'production', // Якщо ви використовуєте HTTPS
+  });
 
   res.status(204).send();
 };
@@ -58,10 +70,15 @@ const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),
+    sameSite: 'None', // Для міждоменних запитів
+    secure: process.env.NODE_ENV === 'production', // Встановлюється на true, якщо ви використовуєте HTTPS
   });
+
   res.cookie('sessionId', session._id, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),
+    sameSite: 'None', // Для міждоменних запитів
+    secure: process.env.NODE_ENV === 'production', // Встановлюється на true, якщо ви використовуєте HTTPS
   });
 };
 
