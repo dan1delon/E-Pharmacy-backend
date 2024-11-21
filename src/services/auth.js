@@ -187,9 +187,7 @@ export const loginOrSignupWithGoogle = async (code) => {
 };
 
 export const getUserInfo = async (userId) => {
-  const user = await UsersCollection.findById(userId).select(
-    'name email phone',
-  );
+  const user = await UsersCollection.findById(userId).select('name email');
   if (!user) {
     throw createHttpError(404, 'User not found');
   }
