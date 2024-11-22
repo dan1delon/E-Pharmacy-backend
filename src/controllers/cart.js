@@ -15,6 +15,12 @@ export const updateCart = async (req, res, next) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
+    if (product.stock < quantity) {
+      return res
+        .status(400)
+        .json({ message: `Not enough stock for product ${product.name}` });
+    }
+
     const cart = await CartCollection.findOne({ userId });
 
     if (!cart) {
@@ -80,7 +86,11 @@ export const checkoutCart = async (req, res, next) => {
       return res.status(400).json({ message: 'Cart is empty' });
     }
 
-    await CartCollection.deleteOne({ userId });
+    const result = await CartCollection.deleteOne({ userId });
+
+    if (result.deletedCount === 0) {
+      return res.status(400).json({ message: 'Failed to clear cart' });
+    }
 
     res
       .status(200)

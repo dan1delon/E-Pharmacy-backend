@@ -7,15 +7,16 @@ export const authenticate = async (req, res, next) => {
   const authHeader = req.get('Authorization');
 
   if (!authHeader) {
-    next(createHttpError(401, 'Please provide Authorization header'));
+    next(createHttpError(401, 'Authorization header is required'));
     return;
   }
 
-  const bearer = authHeader.split(' ')[0];
-  const token = authHeader.split(' ')[1];
+  const [bearer, token] = authHeader.split(' ');
 
   if (bearer !== 'Bearer' || !token) {
-    next(createHttpError(401, 'Auth header should be of type Bearer'));
+    next(
+      createHttpError(401, 'Auth header should be in "Bearer <token>" format'),
+    );
     return;
   }
 
@@ -31,16 +32,16 @@ export const authenticate = async (req, res, next) => {
 
   if (isAccessTokenExpired) {
     next(createHttpError(401, 'Access token expired'));
+    return;
   }
 
   const user = await UsersCollection.findById(session.userId);
 
   if (!user) {
-    next(createHttpError(401));
+    next(createHttpError(401, 'User not found'));
     return;
   }
 
   req.user = user;
-
   next();
 };

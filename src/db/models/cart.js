@@ -1,7 +1,14 @@
 import mongoose, { Schema } from 'mongoose';
 
 const CartItemSchema = new Schema({
-  product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+  product: {
+    _id: { type: Schema.Types.ObjectId, required: true },
+    name: { type: String, required: true },
+    suppliers: { type: String, required: true },
+    price: { type: Number, required: true },
+    photo: { type: String },
+  },
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   quantity: { type: Number, required: true, min: 1 },
 });
 
@@ -10,6 +17,4 @@ const CartSchema = new Schema({
   items: [CartItemSchema],
 });
 
-CartSchema.index({ userId: 1 });
-
-export const CartCollection = mongoose.model('Cart', CartSchema);
+export const CartCollection = mongoose.model('carts', CartSchema);
