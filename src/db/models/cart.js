@@ -8,7 +8,6 @@ const CartItemSchema = new Schema({
     price: { type: Number, required: true },
     photo: { type: String },
   },
-  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   quantity: { type: Number, required: true, min: 1 },
 });
 
