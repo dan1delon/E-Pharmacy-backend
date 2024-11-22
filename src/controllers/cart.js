@@ -6,8 +6,8 @@ export const updateCart = async (req, res, next) => {
     const userId = req.user._id;
     const { productId, quantity } = req.body;
 
-    if (quantity < 1) {
-      return res.status(400).json({ message: 'Quantity must be at least 1' });
+    if (quantity < 0) {
+      return res.status(400).json({ message: 'Quantity must be at least 0' });
     }
 
     const product = await ProductsCollection.findById(productId);
@@ -19,6 +19,12 @@ export const updateCart = async (req, res, next) => {
     const cart = await CartCollection.findOne({ userId });
 
     if (!cart) {
+      if (quantity === 0) {
+        return res
+          .status(400)
+          .json({ message: 'Cannot create cart with quantity 0' });
+      }
+
       const newCart = new CartCollection({
         userId,
         items: [{ product, quantity }],
@@ -31,10 +37,18 @@ export const updateCart = async (req, res, next) => {
       item.product._id.equals(productId),
     );
 
-    if (itemIndex !== -1) {
-      cart.items[itemIndex].quantity = quantity;
+    if (quantity === 0) {
+      if (itemIndex !== -1) {
+        cart.items.splice(itemIndex, 1);
+      } else {
+        return res.status(404).json({ message: 'Product not found in cart' });
+      }
     } else {
-      cart.items.push({ product, quantity });
+      if (itemIndex !== -1) {
+        cart.items[itemIndex].quantity = quantity;
+      } else {
+        cart.items.push({ product, quantity });
+      }
     }
 
     await cart.save();
