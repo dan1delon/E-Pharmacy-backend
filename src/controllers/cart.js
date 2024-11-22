@@ -1,4 +1,5 @@
 import { CartCollection } from '../db/models/cart.js';
+import { OrderCollection } from '../db/models/orders.js';
 import { ProductsCollection } from '../db/models/products.js';
 
 export const updateCart = async (req, res, next) => {
@@ -81,17 +82,34 @@ export const getCartItems = async (req, res, next) => {
 export const checkoutCart = async (req, res, next) => {
   try {
     const userId = req.user._id;
+
     const cart = await CartCollection.findOne({ userId });
 
     if (!cart || cart.items.length === 0) {
       return res.status(400).json({ message: 'Cart is empty' });
     }
 
+    const totalAmount = cart.items.reduce(
+      (sum, item) => sum + item.product.price * item.quantity,
+      0,
+    );
+
+    const newOrder = new OrderCollection({
+      userId,
+      items: cart.items,
+      totalAmount,
+      paymentMethod: req.body.paymentMethod,
+      shippingInfo: req.body.shippingInfo,
+    });
+
+    await newOrder.save();
+
     await CartCollection.deleteOne({ userId });
 
-    res
-      .status(200)
-      .json({ message: 'Order placed successfully and cart cleared' });
+    res.status(201).json({
+      message: 'Order placed successfully',
+      orderId: newOrder._id,
+    });
   } catch (error) {
     next(error);
   }
