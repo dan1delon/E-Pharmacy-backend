@@ -16,7 +16,11 @@ export const updateCart = async (req, res, next) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    const cart = await CartCollection.findOne({ userId });
+    const cart = await CartCollection.findOneAndUpdate(
+      { userId, 'items.product': productId },
+      { $set: { 'items.$.quantity': quantity } },
+      { upsert: true, new: true },
+    );
 
     if (!cart) {
       const newCart = new CartCollection({
