@@ -1,5 +1,5 @@
 # Використовуємо офіційний образ Node.js
-FROM node:20
+FROM node:18
 
 # Встановлюємо робочу директорію
 WORKDIR /app
@@ -9,7 +9,7 @@ COPY package*.json ./
 COPY . .
 
 # Встановлюємо залежності
-RUN npm install
+RUN npm install --omit=dev
 
 # Відкриваємо порт (не обов’язково, але для ясності)
 EXPOSE 3000
