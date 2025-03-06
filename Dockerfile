@@ -16,3 +16,5 @@ EXPOSE 3000
 
 # Запускаємо додаток
 CMD [ "npm", "start" ]
+
+ENV PORT=3000
