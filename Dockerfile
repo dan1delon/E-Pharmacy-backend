@@ -9,7 +9,7 @@ COPY package*.json ./
 COPY . .
 
 # Встановлюємо залежності
-RUN npm install --omit=dev
+RUN npm ci
 
 # Відкриваємо порт (не обов’язково, але для ясності)
 EXPOSE 3000
